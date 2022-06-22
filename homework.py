@@ -25,7 +25,7 @@ class Training:
 
     LEN_STEP = 0.65
     M_IN_KM = 1000
-    HR_IN_MIN = 60
+    MIN_IN_HR = 60
 
     def __init__(self,
                  action: int,
@@ -67,7 +67,7 @@ class Running(Training):
         """Получить количество затраченных калорий."""
         return ((self.RUN_CALORIE_COEFF_1 * self.get_mean_speed()
                 - self.RUN_CALORIE_COEFF_2) * self.weight / self.M_IN_KM
-                * self.duration * self.HR_IN_MIN)
+                * self.duration * self.MIN_IN_HR)
 
 
 class SportsWalking(Training):
@@ -90,14 +90,15 @@ class SportsWalking(Training):
         return ((self.WLK_CALORIE_COEFF_1 * self.weight
                 + (self.get_mean_speed()**2 // self.height)
                 * self.WLK_CALORIE_COEFF_2 * self.weight)
-                * self.duration * self.HR_IN_MIN)
+                * self.duration * self.MIN_IN_HR)
 
 
 class Swimming(Training):
     """Тренировка: плавание."""
 
     LEN_STEP = 1.38
-    SWM_CALORIE_COEFF = 1.1
+    SWM_CALORIE_COEFF_1 = 1.1
+    SWM_CALORIE_COEFF_2 = 2
 
     def __init__(self,
                  action: int,
@@ -117,8 +118,8 @@ class Swimming(Training):
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        return ((self.get_mean_speed() + self.SWM_CALORIE_COEFF)
-                * 2 * self.weight)
+        return ((self.get_mean_speed() + self.SWM_CALORIE_COEFF_1)
+                * self.SWM_CALORIE_COEFF_2 * self.weight)
 
 
 def read_package(workout_type: str, data: List[int]) -> Training:
